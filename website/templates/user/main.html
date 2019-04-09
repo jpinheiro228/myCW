@@ -1,0 +1,27 @@
+{% extends "base_template.html" %}
+{% block main %}
+    <h1>Client List</h1>
+    <table class="table">
+        <tr>
+            <td>Name</td>
+            <td>Type</td>
+            <td>Email</td>
+            <td>Address</td>
+            <td>CPF/CNPJ</td>
+            <td><a href="{{ url_for('client.client_add') }}"><button type="button" class="btn btn-sm btn-success">New Client</button></a></td>
+        </tr>
+        {% for client in clients %}
+            <tr>
+                <td>{{ client.name }}</td>
+                <td>{{ client.c_type.capitalize() }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.address }}</td>
+                <td>{{ client.cnpj_cpf }}</td>
+                <td>
+                    <a href="{{ url_for('client.client_edit', client_id=client.id) }}"><button type="button" class="btn btn-sm btn-warning">Edit</button></a>
+                    <a href="{{ url_for('client.client_rm', client_id=client.id) }}"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

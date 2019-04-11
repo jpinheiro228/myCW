@@ -45,6 +45,6 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-        return redirect(url_for("user.clients"))
+        return redirect(url_for("user.main_page"))
 
     return app

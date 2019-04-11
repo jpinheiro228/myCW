@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-# from website.database import Base
+
 
 db = SQLAlchemy()
 
@@ -33,4 +33,18 @@ class Exercise (db.Model):
         self.check_code = check_code
 
     def __repr__(self):
-        return '<Client %r>' % self.name
+        return '<Exercise {}>'.format(self.id)
+
+
+class ExerciseSolution(db.Model):
+    __tablename__ = "exercise_solution"
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    exercise = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
+    code = db.Column(db.String, unique=True, nullable=False)
+
+    def __init__(self, code):
+        self.code = code
+
+    def __repr__(self):
+        return "<Solution {}>".fomat(self.id)

@@ -5,14 +5,13 @@ from flask import (
 from website import db_utils
 from website.auth import login_required
 
-bp = Blueprint('user', __name__, url_prefix='/clients')
+bp = Blueprint('user', __name__, url_prefix='/my_home')
 
 
-# Clients Functions
 @bp.route("/")
 @login_required
 def main_page():
-    return render_template("user/main.html", current_exercise=db_utils.get_current_exercise_id(session["user_id"]))
+    return render_template("user/main.html", current_exercise=db_utils.get_current_exercise_id(user_id=session["user_id"]))
 
 
 @bp.route("/list", methods=["GET", "POST"])
@@ -26,14 +25,14 @@ def list_exercises():
 
 @bp.route("/exercise", methods=["GET", "POST"])
 @login_required
-def exercise(client_id):
+def exercise():
+    ex_id = db_utils.get_current_exercise_id(user_id=session["user_id"])
+    ex = db_utils.get_exercise(int(ex_id))
     if request.method == "GET":
-        client = db_utils.get_clients(client_id)
-        return render_template("user/client_rm.html", client=client)
+        desc = ex.description
+        test_code = ex.test_code
+        return render_template("user/exercise.html", description=desc, test_code=test_code)
     elif request.method == "POST":
-        error = db_utils.rm_client(client_id)
-        if error:
-            flash(error, category="danger")
-        return redirect(url_for("user.clients"))
+        check_code = ex.check_code
     else:
         return abort(501)

@@ -1,4 +1,6 @@
 {% extends "base_template.html" %}
 {% block main %}
     <h1>Main User Page</h1>
+    <p>User: {{ session.username }}</p>
+    <p>Current Exercise: <a href="{{ url_for('user.exercise') }}">{{ current_exercise }}</a>
 {% endblock %}

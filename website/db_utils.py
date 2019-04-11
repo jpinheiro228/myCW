@@ -55,16 +55,15 @@ def rm_user(user_id):
 
 def get_current_exercise_id(username=None, user_id=None):
     if username:
-        return User.query.filter_by(username=username).first().current_exercise
+        return int(User.query.filter_by(username=username).first().current_exercise)
     elif user_id:
-        return User.query.filter_by(id=user_id).first().current_exercise
+        return int(User.query.filter_by(id=user_id).first().current_exercise)
     else:
         return 0
 
 
-def get_current_exercise(exercise_id=None):
+def get_exercise(exercise_id=None):
     if exercise_id:
-        ex = Exercise.query.filter_by(id=exercise_id).first()
-        description = ex.description
-        tests = ex.test_code
-        solution_test = ex.check_code
+        ex = Exercise.query.filter_by(id=int(exercise_id)).first()
+        return ex
+    return None

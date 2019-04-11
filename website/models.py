@@ -14,7 +14,7 @@ class User(db.Model):
     def __init__(self, username=None, password=None):
         self.username = username
         self.password = password
-        self.current_exercise = 0
+        self.current_exercise = 1
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -39,7 +39,7 @@ class Exercise (db.Model):
 class ExerciseSolution(db.Model):
     __tablename__ = "exercise_solution"
     id = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     exercise = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
     code = db.Column(db.String, unique=True, nullable=False)
 

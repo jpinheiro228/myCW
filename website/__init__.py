@@ -28,7 +28,6 @@ def create_app(test_config=None):
         pass
 
     # Importing configurations and blueprints
-    # from . import db
     from website.models import db
     db.init_app(app)
     with app.app_context():
@@ -36,7 +35,7 @@ def create_app(test_config=None):
             from website.models import User, Exercise
             db.create_all()
             admin_user = User(username="admin", password=generate_password_hash("admin"))
-            exercise_0 = Exercise("exercise 1", "my test code comes here", "secret validation code")
+            exercise_0 = Exercise("exercise 1", "my test code comes here", "secret validation code")  # Test Exercise
             db.session.add(admin_user)
             db.session.add(exercise_0)
             db.session.commit()

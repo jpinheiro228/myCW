@@ -1,4 +1,4 @@
-from website.models import db, User, Exercise
+from website.models import db, User, Exercise, ExerciseSolution
 
 
 def get_user(username=None, user_id=None):
@@ -67,3 +67,27 @@ def get_exercise(exercise_id=None):
         ex = Exercise.query.filter_by(id=int(exercise_id)).first()
         return ex
     return None
+
+
+def get_exercise_solution(exercise_id=None,user=None):
+    if exercise_id:
+        ex = ExerciseSolution.query.filter_by(exercise=int(exercise_id),
+                                              user=int(user)).first()
+        return ex
+    return None
+
+
+def update_exercise_solution(exercise_id=None, user=None, new_code=None):
+    ex = None
+    if exercise_id:
+        ex = ExerciseSolution.query.filter_by(exercise=int(exercise_id),
+                                              user=int(user)).first()
+    if ex:
+        ex.code = new_code
+    else:
+        ex = ExerciseSolution(exercise=exercise_id,
+                              user=int(user),
+                              code=new_code)
+        db.session.add(ex)
+    db.session.commit()
+    return ex

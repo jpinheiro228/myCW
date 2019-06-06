@@ -53,6 +53,28 @@ def register():
     return render_template('auth/register.html')
 
 
+@bp.route('/myaccount', methods=('GET', 'POST'))
+@login_required
+def myaccount():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if not username:
+            error = 'Username is required.'
+        elif not password:
+            error = 'Password is required.'
+        else:
+            error = db_utils.edit_user_pwd(username=username, new_pass=generate_password_hash(password))
+
+        if error is None:
+            flash("Password changed successfully.", category="success")
+            return redirect(url_for('auth.myaccount'))
+
+        flash(error, category="danger")
+
+    return render_template('auth/myacc.html')
+
+
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':

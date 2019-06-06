@@ -11,7 +11,7 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'myCodeWars.sqlite'),
     )
-
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(app.instance_path, 'myCodeWars.sqlite')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     if test_config is None:

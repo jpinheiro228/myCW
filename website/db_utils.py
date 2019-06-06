@@ -35,6 +35,25 @@ def add_user(username=None, hashed_password=None):
     return error
 
 
+def edit_user_pwd(username=None, new_pass=None):
+    """
+
+    :param username:
+    :param hashed_password:
+    :return:
+    """
+    error = None
+    user = User.query.filter_by(username=username).first()
+    if user:
+        user.password = new_pass
+        try:
+            db.session.commit()
+        except Exception as e:
+            error = str(e)
+
+    return error
+
+
 def rm_user(user_id):
     error = None
     if user_id == 1:

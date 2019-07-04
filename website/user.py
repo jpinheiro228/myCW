@@ -4,6 +4,10 @@ from flask import (Blueprint, flash, redirect,
 
 from website import db_utils
 from website.auth import login_required
+import os
+import docker_control as dc
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 bp = Blueprint('user', __name__, url_prefix='/my_home')
 
@@ -28,31 +32,32 @@ def list_exercises():
 @bp.route("/exercise", methods=["GET", "POST"])
 @login_required
 def exercise():
-    ex_id = db_utils.get_current_exercise_id(user_id=session["user_id"])
-    ex = db_utils.get_exercise(int(ex_id))
-    ex_sol = db_utils.get_exercise_solution(exercise_id=int(ex_id),
+    exercise_id = request.args.get('exercise_id')
+    output = request.args.get('output')
+
+    if not exercise_id:
+        exercise_id = db_utils.get_current_exercise_id(user_id=session["user_id"])
+    ex = db_utils.get_exercise(int(exercise_id))
+    ex_sol = db_utils.get_exercise_solution(exercise_id=int(exercise_id),
                                             user=session["user_id"])
-    if request.method == "GET":
-        desc = ex.description
-        test_code = ex.test_code
-        my_solution = ""
-        if ex_sol:
-            my_solution = ex_sol.code
-        return render_template("user/exercise.html",
-                               description=desc,
-                               test_code=test_code,
-                               my_solution=my_solution)
-    elif request.method == "POST":
+    my_solution = ""
+    if ex_sol:
+        my_solution = ex_sol.code
+
+    if request.method == "POST":
         sub_type = request.form["sub_type"]
-        code = request.form["my_solution"]
-        ex_sol = db_utils.update_exercise_solution(ex_id,
-                                                   session["user_id"],
-                                                   code)
+        my_solution = request.form["my_solution"]
         if sub_type == "test":
-            test_code = ex.test_code
-            pass
-        elif sub_type == "final":
-            check_code = ex.check_code
-        return redirect(request.referrer)
-    else:
-        return abort(501)
+            exec_code = ex.test_code
+        else:
+            exec_code = ex.check_code
+
+        output = dc.run_code(code=my_solution, test_code=exec_code, user=session["username"])
+        db_utils.update_exercise_solution(exercise_id, session["user_id"], my_solution)
+
+    return render_template("user/exercise.html",
+                           description=ex.description,
+                           test_code=ex.test_code,
+                           my_solution=my_solution,
+                           output=output,
+                           exercise_id=exercise_id)

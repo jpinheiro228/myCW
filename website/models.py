@@ -41,7 +41,7 @@ class ExerciseSolution(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     exercise = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
-    code = db.Column(db.String, nullable=False)
+    code = db.Column(db.String, nullable=False, unique=False)
 
     def __init__(self, user, exercise, code):
         self.user = user

@@ -123,6 +123,67 @@ def update_exercise_solution(exercise_id=None, user=None, new_code=None):
         db.session.add(ex)
     db.session.commit()
     return ex
+
+
+def add_exercise(description="", test_code="", check_code=""):
+    error = None
+    ex = Exercise(description, test_code, check_code)  # Test Exercise
+    db.session.add(ex)
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        error = str(e)
+    return error
+
+
+def rm_exercise(id):
+    error = None
+
+    try:
+        exercise = Exercise.query.filter_by(id=id).first()
+        if exercise:
+            db.session.delete(exercise)
+            ####################################################################
+            #                Remove all related solutions                      #
+            solutions = ExerciseSolution.query.filter_by(exercise=id).all()
+            for i in solutions:
+                db.session.delete(i)
+            ####################################################################
+            db.session.commit()
+        else:
+            raise Exception("Exercise not found.")
+    except Exception as e:
+        error = str(e)
+
+    return error
+
+
+def get_all_exercises():
+    exercises = Exercise.query.all()
+    exercises_dict = []
+    for i in exercises:
+        exercises_dict.append({"id": i.id, "description": i.description,
+                               "test_code": i.test_code, "check_code": i.check_code})
+
+    return exercises_dict
+
+
+def edit_exercise(exercise_id=None, description="", test_code="", check_code=""):
+    error = None
+    exercise = Exercise.query.filter_by(id=exercise_id).first()
+    if exercise:
+        exercise.description = description
+        exercise.test_code = test_code
+        exercise.check_code = check_code
+        try:
+            db.session.commit()
+        except Exception as e:
+            error = str(e)
+
+    return error
+
+
 def get_all_solutions():
     solutions = ExerciseSolution.query.all()
     solutions_dict = []

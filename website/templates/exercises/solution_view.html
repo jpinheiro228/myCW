@@ -1,0 +1,29 @@
+{% extends "base_template.html" %}
+
+{% block main %}
+    <br/>
+    <h2 class="form-signin-heading text-center">Exercise</h2>
+    <div class="form-group text-center">
+        <h5>Exercise Description</h5>
+    </div>
+
+    <div class="container">
+        <p>User: {{ username }}</p>
+        <p>Exercise ID: {{ solution.exercise }}</p>
+        <form class="form" method="post" enctype=multipart/form-data action="">
+            <div class="form-group text-center">
+                <h5>Solution</h5>
+                <textarea class="form-control" name="my_solution" id="my_solution" rows="10" readonly>{{ solution.code }}</textarea>
+            </div>
+            {%  if output %}
+            <div class="form-group text-center">
+                <h5>Output</h5>
+                <textarea class="form-control" name="output" id="output" rows="10" readonly>{{ output }}</textarea>
+            </div>
+            {% endif %}
+            <div class="form-group text-center">
+                <button class="btn btn-warning" type="submit">Check</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base_template.html' %}
+
+{% block header %}
+  <h1>{% block title %}Users List{% endblock %}</h1>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <br/>
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th style="width: 10%">ID</th>
+                    <th style="width: 70%">Description</th>
+                    <th style="width: 20%; text-align: right">{% if session["user_id"] == 1 %}<a class="btn btn-primary btn-sm" href="{{ url_for('exercises.new') }}" >New Exercise</a>{% endif %}</th>
+                </tr>
+                </thead>
+            <tbody>
+                {% for exercise in exercise_list %}
+                <tr>
+                    <td>{{ exercise["id"] }}</td>
+                    <td>{{ exercise["description"].split('\n', 1)[0] }}</td>
+                    <td style="text-align: right">
+                        <a class="btn btn-success btn-sm" href="{{ url_for('user.exercise',exercise_id=exercise["id"]) }}" >View</a>
+                        {% if session["user_id"] == 1 %}
+                            <a class="btn btn-warning btn-sm" href="{{ url_for('exercises.edit',exercise_id=exercise["id"]) }}" >Edit</a>
+                            <a class="btn btn-danger btn-sm" href="{{ url_for('exercises.remove',exercise_id=exercise["id"]) }}" >Remove</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

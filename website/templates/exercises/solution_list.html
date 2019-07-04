@@ -1,0 +1,32 @@
+{% extends 'base_template.html' %}
+
+{% block header %}
+  <h1>{% block title %}Users List{% endblock %}</h1>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <br/>
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th style="width: 10%">Ex ID</th>
+                    <th style="width: 70%">User</th>
+                    <th style="width: 20%; text-align: right"></th>
+                </tr>
+                </thead>
+            <tbody>
+                {% for solution in solution_list %}
+                <tr>
+                    <td>{{ solution["exid"] }}</td>
+                    <td>{{ solution["user"] }}</td>
+                    <td style="text-align: right">
+                        <a class="btn btn-success btn-sm" href="{{ url_for('exercises.solution_view',user=solution["user_id"],id=solution["exid"]) }}" >View</a>
+{#                        <a class="btn btn-success btn-sm" href="" >View</a>#}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

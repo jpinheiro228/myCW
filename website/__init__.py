@@ -38,8 +38,10 @@ def create_app(test_config=None):
             db.session.add(admin_user)
             db.session.commit()
 
+    from . import auth, user, exercises
     app.register_blueprint(auth.bp)
     app.register_blueprint(user.bp)
+    app.register_blueprint(exercises.bp)
 
     @app.route('/')
     def index():

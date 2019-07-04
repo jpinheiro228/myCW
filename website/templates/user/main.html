@@ -1,6 +1,9 @@
 {% extends "base_template.html" %}
 {% block main %}
-    <h1>Main User Page</h1>
-    <p>User: {{ session.username }}</p>
-    <p>Current Exercise: <a href="{{ url_for('user.exercise') }}">{{ current_exercise }}</a>
+    <br/>
+    <p>Hello {{ session.username }}!</p>
+
+    <p>To check the exercises, please visit your <a href="{{ url_for('exercises.list') }}">Exercise List</a></p>
+
+    <p>To manage your account, visit your <a href="{{ url_for('auth.myaccount') }}">Account Management</a> page</p>
 {% endblock %}

@@ -17,6 +17,7 @@
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/signin.css') }}">
+    {% block extrahead %}{% endblock %}
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -32,11 +33,21 @@
                 <a class="nav-link" href="{{ url_for('index') }}">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('user.main_page') }}">My Page</a>
+                <a class="nav-link" href="{{ url_for('exercises.list') }}">Exercise List</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Exercise List</a>
-            </li>
+            {% if session["user_id"] == 1 %}
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ url_for("auth.list") }}">Manage Users</a>
+                            <a class="dropdown-item" href="{{ url_for("exercises.solution_list") }}">Exercises Solutions</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                </li>
+            {% endif %}
         </ul>
 
     </div>

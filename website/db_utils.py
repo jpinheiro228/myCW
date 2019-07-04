@@ -16,6 +16,19 @@ def get_user(username=None, user_id=None):
         return None
 
 
+def get_all_users():
+    """
+
+    :return:
+    """
+    users = User.query.all()
+    users_dict = []
+    for i in users:
+        users_dict.append({"id": i.id, "name": i.username})
+
+    return users_dict
+
+
 def add_user(username=None, hashed_password=None):
     """
 
@@ -104,9 +117,20 @@ def update_exercise_solution(exercise_id=None, user=None, new_code=None):
     if ex:
         ex.code = new_code
     else:
-        ex = ExerciseSolution(exercise=exercise_id,
+        ex = ExerciseSolution(exercise=int(exercise_id),
                               user=int(user),
                               code=new_code)
         db.session.add(ex)
     db.session.commit()
     return ex
+def get_all_solutions():
+    solutions = ExerciseSolution.query.all()
+    solutions_dict = []
+    for i in solutions:
+        solutions_dict.append({"id": i.id,
+                               "exid": i.exercise,
+                               "user": get_user(user_id=i.user).username,
+                               "user_id": i.user,
+                               "solution": i.code})
+
+    return solutions_dict

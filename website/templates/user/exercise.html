@@ -3,22 +3,29 @@
 {% block main %}
     <h2 class="form-signin-heading text-center">Exercise</h2>
     <div class="form-group text-center">
-        <p>Exercise Description</p>
-        <p>{{ description }}</p>
+        <h5>Exercise Description</h5>
     </div>
-    <div>
-        <form class="form" method="post" enctype=multipart/form-data action="">
+
+    <div class="container">
+        {% for i in description.split('\n') %}
+            <p>{{ i }}</p>
+        {% endfor %}
+        <form class="form" method="post" enctype=multipart/form-data action="{{ url_for('user.exercise',exercise_id=exercise_id) }}">
             <div class="form-group text-center">
-                <p>My solution</p>
-                <textarea name="my_solution" cols="80" rows="10">{{ my_solution }}</textarea>
+                <h5>My solution</h5>
+                <textarea class="form-control" name="my_solution" id="my_solution" rows="10">{{ my_solution }}</textarea>
             </div>
             <div class="form-group text-center">
-                <p>Tests</p>
-                <textarea name="test_code" cols="80" rows="10" readonly>{{ test_code }}</textarea>
+                <h5>Tests</h5>
+                <textarea class="form-control" name="test_code" rows="10" readonly>{{ test_code }}</textarea>
             </div>
             <div class="form-group text-center">
-                <button class="btn btn-sm btn-danger" type="submit" name="sub_type" value="test">Test</button>
-                <button class="btn btn-sm btn-danger" type="submit" name="sub_type" value="final">Submit</button>
+                <h5>Output</h5>
+                <textarea class="form-control" name="output" rows="10" readonly>{{ output }}</textarea>
+            </div>
+            <div class="form-group text-center">
+                <button class="btn btn-warning" type="submit" name="sub_type" value="test">Test</button>
+                <button class="btn btn-success" type="submit" name="sub_type" value="final">Submit</button>
             </div>
         </form>
     </div>

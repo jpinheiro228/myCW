@@ -1,0 +1,17 @@
+{% extends 'base_template.html' %}
+
+{% block header %}
+  <h1>{% block title %}Users List{% endblock %}</h1>
+{% endblock %}
+
+{% block main %}
+    <div class="form-signin">
+        Are you sure you want to remove the user {{ user.username }}?
+        <form method="post" action="{{ url_for('auth.remove',rm_id=user.id) }}">
+            <input type="hidden" name="rm_id" id="rm_id" value="{{ user.id }}">
+            <div class="form-group">
+                <input class="btn btn-danger btn-block" type="submit" value="Remove User">
+            </div>
+        </form>
+    </div>
+{% endblock %}
